@@ -11,7 +11,7 @@ public class GestorProductos {
     Productos[] productos = new Productos[tamanoVector];
     int cont = 0;
 
-    public String agregarTarea(Productos producto) {
+    public String agregarProductos(Productos producto) {
         String msg = "Ingreso exitoso";
         
         if (productos.length != cont) {
@@ -20,9 +20,9 @@ public class GestorProductos {
                     //inicializar el objeto
                     productos [i] = new Productos();
                     productos[i].setId(i);
-                    productos[i].setTitulo(producto.getTitulo());
+                    productos[i].setNombre(producto.getNombre());
                     productos[i].setPrecio(producto.getPrecio());
-                    productos[i].setEstado(producto.isEstado());
+                    productos[i].setEstado(producto.getEstado());
                     cont++;
                     //con esto me aseguro que los datos solo se ingresen una vez en el vector. 
                     return msg;
@@ -40,18 +40,20 @@ public class GestorProductos {
         for (int i = 0; i < cont; i++) {
 
             //if (tareas[i].getEstado()) {
-            auxProductos[i] = new Productos();
+            auxProductos [i] = new Productos();
             auxProductos[i].setId(productos[i].getId());
-            auxProductos[i].setTitulo(productos[i].getTitulo());
+            auxProductos[i].setNombre(productos[i].getNombre());
             auxProductos[i].setPrecio(productos[i].getPrecio());
-            auxProductos[i].setEstado(productos[i].isEstado());
-            System.out.println("Modelo-listaProducto" + auxProductos[i].isEstado());
+            auxProductos[i].setEstado(productos[i].getEstado());
+            System.out.println("Modelo-listaProducto" + auxProductos[i].getEstado());
             // }
         }
         return auxProductos;
     }
 
-    public String agregarProductos(Productos objProductos) {
+    
+
+    public String agregarProducto(Productos objProductos) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

@@ -3,70 +3,47 @@ package espoch.edu.ec.finish.Controlador;
 
 import espoch.edu.ec.finish.Modelo.GestorProductos;
 import espoch.edu.ec.finish.Modelo.Productos;
-import java.security.Principal;
+import espoch.edu.ec.finish.Vista.Listar;
+import espoch.edu.ec.finish.Vista.Vista;
+
+
+
 
 /**
  *
  * @author and_j
  */
 public class Controlador {
-    private Principal principal;
+    private Vista vista;
     private GestorProductos gestorProductos;
-    private ListarIU listarIU;
+    private Listar listar;
+    
     //Cuando hagas conexion con el modelo --> quita los /// de la linea 17
     //private GestorTarea gestorTarea;
-
-    public Controlador(Principal principal, ListarIU listarIU) {
-        this.principal = principal;
-        this.listarIU= listarIU;
-        //Cambia el constructor de la clase modelo
-        this.gestorProductos = new GestorProductos();
+    public Controlador(Vista vista, GestorProductos gestorProductos, Listar listar) {
+        this.vista = vista;
+        this.gestorProductos =  new GestorProductos();
+        this.listar = listar;
     }
-
-    public void agregarProductos() {
+        public void agregarProductos() {
         try {
-        if (this.principal != null) {
-            Productos objProductos = new Productos();
-            objProductos.setId(Integer.parseInt(this.principal.getId())); // Asegúrate de que el ID sea un número válido
-            objProductos.setTitulo(this.principal.getTitulo());
-            objProductos.setDescripcion(this.principal.getDescripcion());
-            objProductos.setEstado(this.principal.isEstado()); // Agregar los paréntesis
-
-            String msg = gestorProductos.agregarTarea(objProductos); // Cambiar gestorTarea por gestorProductos
-            principal.error(msg);
-        } else {
-            principal.error("¡Completa los datos!");
-        }
-    } catch (NumberFormatException e) {
-        principal.error("Error: el ID debe ser un número válido.");
-    } catch (NullPointerException e) {
-        principal.error("Error: Faltan datos en el formulario.");
-    } catch (Exception e) {
-        principal.error("Error inesperado: " + e.getMessage());
-    }
-}
-    }
-        
-     /*try {
-            if (this.principal != null) {
+            if (this.vista != null) {
                 Productos objProductos = new Productos();
-                objProductos.setTitulo(this.principal.getTitulo());
-                objProductos.setDescripcion(this.principal.getDescripcion());
-                objProductos.setEstado(this.principal.isEstado());
-                String msm = gestorTarea.agregarTarea(objTarea);
-                principal.error(msm);
+                objProductos.setNombre(this.vista.getNombre());
+                objProductos.setPrecio(this.vista.getPrecio());
+                //objProductos.setEstado(this.vista.getEstado());
+                objProductos.setEstado(Boolean.parseBoolean(this.vista.getEstado()));
 
+
+                String msg = gestorProductos.agregarProducto(objProductos);
+                vista.error(msg);
             } else {
-                principal.error("Completa los datos!");
+                vista.error("¡Completa todos los datos!");
             }
         } catch (Exception e) {
-            principal.error("Error controlado:" + e);
-        }
-    }*/
-
-
-        
-
+            vista.error("Error al agregar producto: " + e.getMessage());
+        }  
+}
     public void listarProductos() {
       try {
         Productos[] productos = gestorProductos.listarProductos();
@@ -75,18 +52,18 @@ public class Controlador {
             for (Productos p : productos) {
                 if (p != null) {
                     lista.append("ID: ").append(p.getId()).append("\n")
-                         .append("Título: ").append(p.getTitulo()).append("\n")
+                         .append("Título: ").append(p.getNombre()).append("\n")
                          .append("Precio: ").append(p.getPrecio()).append("\n")
-                         .append("Estado: ").append(p.isEstado() ? "Activo" : "Inactivo").append("\n\n");
+                         .append("Estado: ").append(p.getEstado() ? "Activo" : "Inactivo").append("\n\n");
                 }
             }
             System.out.println(lista.toString()); // Muestra la lista en consola
-            listarIU.mostrarLista(lista.toString()); // Si listarIU tiene un método para mostrar la lista en la interfaz
+            listar.mostrarLista(lista.toString()); // Si listarIU tiene un método para mostrar la lista en la interfaz
         } else {
-            listarIU.mostrarLista("No hay productos disponibles.");
+            listar.mostrarLista("No hay productos disponibles.");
         }
     } catch (Exception e) {
-        listarIU.mostrarLista("Error al listar productos: " + e.getMessage());
+        listar.mostrarLista("Error al listar productos: " + e.getMessage());
     }
 } 
 } 

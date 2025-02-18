@@ -9,9 +9,9 @@ import espoch.edu.ec.finish.Modelo.Productos;
  */
 public class TesterControlador {
       public void prueba(Productos objproductos) {
-        System.out.println("Titulo: " + objproductos.getTitulo());
+        System.out.println("Titulo: " + objproductos.getNombre());
         System.out.println("Descripcion: " + objproductos.getPrecio());
-        System.out.println("Estado: " + objproductos.isEstado());
+        System.out.println("Estado: " + objproductos.getEstado());
        
     }
 }

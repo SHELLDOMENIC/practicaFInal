@@ -1,17 +1,57 @@
 
 package espoch.edu.ec.finish.Vista;
 
+import espoch.edu.ec.finish.Controlador.Controlador;
+import espoch.edu.ec.finish.Modelo.GestorProductos;
+import javax.swing.JRadioButton;
+
 /**
  *
  * @author and_j
  */
 public class Vista extends javax.swing.JFrame {
+    private Controlador controlador;
+    private Listar listar;
 
     /**
      * Creates new form Vista
      */
     public Vista() {
         initComponents();
+        this.listar= new Listar();
+        this.controlador = new Controlador (this, new GestorProductos(), listar);
+    }
+    // Método para obtener el nombre del producto
+    public String getNombre() {
+        return txtnombre.getText();
+    }
+
+    // Método para obtener el precio del producto
+    public double getPrecio() {
+        return Double.parseDouble(txtprecio.getText());
+    }
+
+    // Método para mostrar mensajes de error
+    public void error(String text) {
+        labingrese.setText(text);
+    }
+
+    // Método para limpiar los campos del formulario
+    public void limpiar() {
+        txtnombre.setText("");
+        txtprecio.setText("");
+        btngDisponibleyNo.clearSelection();
+    }
+
+    // Método para obtener el estado del producto como String
+    public String getEstado() {
+        if (btnnselecDisponible.isSelected()) {
+            return "true"; // Disponible
+        } else if (btnnselecAgotado.isSelected()) {
+            return "false"; // Agotado
+        } else {
+            return "false"; // Por defecto, si no hay selección
+        }
     }
 
     /**
@@ -23,12 +63,12 @@ public class Vista extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bttinvisible = new javax.swing.ButtonGroup();
+        btngDisponibleyNo = new javax.swing.ButtonGroup();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         labTitulo = new javax.swing.JLabel();
         labingrese = new javax.swing.JLabel();
-        txtInpro = new javax.swing.JTextField();
         btnOk = new javax.swing.JButton();
         btnnRegistro = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -51,14 +91,6 @@ public class Vista extends javax.swing.JFrame {
 
         labTitulo.setText("Gestión de Productos");
 
-        labingrese.setText("Ingrese id ");
-
-        txtInpro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtInproActionPerformed(evt);
-            }
-        });
-
         btnOk.setText("ELIMINAR");
         btnOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,6 +99,11 @@ public class Vista extends javax.swing.JFrame {
         });
 
         btnnRegistro.setText("GUARDAR");
+        btnnRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnnRegistroActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Ingrese nombre ");
 
@@ -84,6 +121,7 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
+        btngDisponibleyNo.add(btnnselecDisponible);
         btnnselecDisponible.setText("Disponible");
         btnnselecDisponible.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,6 +129,7 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
+        btngDisponibleyNo.add(btnnselecAgotado);
         btnnselecAgotado.setText("Agotado");
         btnnselecAgotado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,7 +140,7 @@ public class Vista extends javax.swing.JFrame {
         menu.setText("Menú ");
         menu.setActionCommand("Menú\n");
 
-        jMenuItem1.setText("Listar tareas \n");
+        jMenuItem1.setText("Listar Productos");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -123,20 +162,16 @@ public class Vista extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(labingrese)
+                            .addComponent(jLabel1))
+                        .addGap(63, 63, 63)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(75, 75, 75)
-                                .addComponent(txtprecio))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labingrese)
-                                    .addComponent(jLabel1))
-                                .addGap(65, 65, 65)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtInpro)
-                                    .addComponent(txtnombre)))))
+                                .addComponent(txtnombre)
+                                .addGap(2, 2, 2))
+                            .addComponent(txtprecio)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(144, 144, 144)
                         .addComponent(labTitulo)
@@ -159,38 +194,36 @@ public class Vista extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(labTitulo)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labingrese)
-                    .addComponent(txtInpro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(txtprecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnnselecDisponible)
-                    .addComponent(btnnselecAgotado))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnnRegistro)
-                    .addComponent(btnOk))
-                .addGap(45, 45, 45))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labingrese)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(txtprecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnnselecDisponible)
+                            .addComponent(btnnselecAgotado))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnnRegistro)
+                            .addComponent(btnOk))
+                        .addGap(45, 45, 45))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtInproActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtInproActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtInproActionPerformed
-
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
+     limpiar();       
         // TODO add your handling code here:
     }//GEN-LAST:event_btnOkActionPerformed
 
@@ -199,6 +232,7 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_txtprecioActionPerformed
 
     private void txtnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreActionPerformed
+
         // TODO add your handling code here:
     }//GEN-LAST:event_txtnombreActionPerformed
 
@@ -212,19 +246,27 @@ public class Vista extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        listar.setVisible(true);
+        controlador.listarProductos();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+     
+    private void btnnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnRegistroActionPerformed
+     this.controlador.agregarProductos();
+    }//GEN-LAST:event_btnnRegistroActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOk;
+    private javax.swing.ButtonGroup btngDisponibleyNo;
     private javax.swing.JButton btnnRegistro;
     private javax.swing.JRadioButton btnnselecAgotado;
     private javax.swing.JRadioButton btnnselecDisponible;
-    private javax.swing.ButtonGroup bttinvisible;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -236,7 +278,6 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JLabel labTitulo;
     private javax.swing.JLabel labingrese;
     private javax.swing.JMenu menu;
-    private javax.swing.JTextField txtInpro;
     private javax.swing.JTextField txtnombre;
     private javax.swing.JTextField txtprecio;
     // End of variables declaration//GEN-END:variables

@@ -2,7 +2,8 @@
 
 package espoch.edu.ec.finish;
 
-import java.security.Principal;
+import espoch.edu.ec.finish.Vista.Vista;
+
 
 /**
  *
@@ -11,7 +12,7 @@ import java.security.Principal;
 public class FINISH {
 
     public static void main(String[] args) {
-       Principal objPrincipal=new Principal();
-        objPrincipal.setVisible(true);
+       Vista objVista = new Vista ();
+       objVista.setVisible(true);
     }
 }
